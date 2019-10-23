@@ -7,16 +7,15 @@ export default class ToDoList extends React.Component {
     super(props)
     this.state = {
       array: [
-        {id: 0, title: '天气不错哦', status: '未完成', index: 0},
-        {id: 1, title: '德玛西亚', status: '未完成', index: 1}
+        {currentClass: '', id: 0, title: '天气不错哦', status: '未完成', index: 0},
+        {currentClass: '', id: 1, title: '德玛西亚', status: '未完成', index: 1}
       ],
-      value: '',
-      child:""
+      value: ''
     }
   }
 
   addToStrip() {
-    this.state.array.push({id:this.randomId() , title: this.state.value, status: '未完成', index: 2});
+    this.state.array.push({id:this.randomId() , title: this.state.value, status: '未完成', index: 2, currentClass: ''});
     this.setState({
       array: this.state.array
     });
@@ -43,13 +42,13 @@ export default class ToDoList extends React.Component {
     })
   }
 
-  handleClass(current, e) {
-    if (e.target.getAttribute('class')) {
+  handleClass(current) {
+    if (current.currentClass) {
       current.status = '未完成';
-      e.target.setAttribute('class', '');
+      current.currentClass = '';
     } else {
       current.status = '已完成';
-      e.target.setAttribute('class', 'rm-line');
+      current.currentClass = 'rm-line';
     }
 
     this.state.array.forEach((item, index) => {
@@ -63,11 +62,11 @@ export default class ToDoList extends React.Component {
   }
 
   handleListtype(value) {
-    console.log(this.child, 'this.child');
+    this.refs.content.filterList(value);
   }
 
-  onRef = (ref) => {
-    this.child = ref;
+  onRef(ref) {
+    this.content = ref;
   }
 
   render() {
@@ -78,11 +77,11 @@ export default class ToDoList extends React.Component {
           <button onClick={ this.addToStrip.bind(this) }>添加</button>
         </div>
         <Content
-          onRef={ this.onRef }
+          ref="content"
+          onRef={ this.onRef.bind(this) }
           list={ this.state.array }
           handleClass={ this.handleClass.bind(this) }
-          removeStrip={ this.removeStrip.bind(this) }
-          handleListtype={ this.handleListtype.bind(this, this.state.type) }>
+          removeStrip={ this.removeStrip.bind(this) }>
         </Content>
         <div>
           <button onClick={ this.handleListtype.bind(this, 'all') }>全部</button>

@@ -23,7 +23,7 @@ export default class Content extends React.Component {
   }
 
   componentDidMount() {
-    this.props.onRef(this);
+    this.props.onRef('content', this);
     this.filterList('all');
   }
 
@@ -33,7 +33,7 @@ export default class Content extends React.Component {
         {
           this.state.list.map(item => {
             return <div key={ item.id } style={{ cursor: 'pointer' }}>
-              <span onClick={ this.props.handleClass.bind(this, item) }>{ item.title }</span>
+              <span className={item.currentClass} onClick={ this.props.handleClass.bind(this, item) }>{ item.title }</span>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <span>{ item.status }</span>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
